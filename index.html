@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SecureBank — Online Banking Portal</title>
+  <style>
+    :root{--navy:#0b1f3a;--blue:#1769e0;--bg:#f4f7fb;--card:#fff;--muted:#64748b;--green:#0f9d58;--red:#d64545}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:#142033}
+    .top{background:var(--navy);color:#fff;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center}.brand{font-size:22px;font-weight:800}.secure{font-size:13px;opacity:.8}
+    main{max-width:1180px;margin:30px auto;padding:0 20px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:24px}.hero h1{margin:0 0 8px;font-size:32px}.hero p{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--card);border-radius:16px;padding:22px;box-shadow:0 6px 22px rgba(20,32,51,.07)}.label{color:var(--muted);font-size:13px}.amount{font-size:30px;font-weight:800;margin-top:8px}.up{color:var(--green)}
+    .wide{grid-column:1/-1}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.btn{border:0;border-radius:10px;padding:11px 16px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}.btn.secondary{background:#e9eef7;color:var(--navy)}
+    table{width:100%;border-collapse:collapse;margin-top:10px}th,td{text-align:left;padding:13px 8px;border-bottom:1px solid #e8edf4;font-size:14px}th{color:var(--muted);font-size:12px;text-transform:uppercase}.credit{color:var(--green);font-weight:700}.debit{color:var(--red);font-weight:700}
+    .status{display:inline-flex;align-items:center;gap:7px;color:var(--green);font-weight:700}.dot{width:9px;height:9px;background:var(--green);border-radius:50%}.notice{background:#eef6ff;border-left:4px solid var(--blue);padding:13px 15px;border-radius:8px;color:#284a72;margin-top:20px;font-size:13px}
+    footer{text-align:center;color:var(--muted);padding:30px;font-size:12px}@media(max-width:800px){.grid{grid-template-columns:1fr}.hero{display:block}.wide{grid-column:auto}}
+  </style>
+</head>
+<body>
+<header class="top"><div class="brand">SecureBank</div><div class="secure">🔒 Demo environment · No real banking data</div></header>
+<main>
+  <section class="hero"><div><h1>Good morning, Alex</h1><p>Your secure digital banking dashboard</p></div><div class="status"><span class="dot"></span> All services operational</div></section>
+  <section class="grid">
+    <div class="card"><div class="label">Total balance</div><div class="amount">$41,200.95</div><div class="label">Across 2 accounts</div></div>
+    <div class="card"><div class="label">Checking</div><div class="amount">$12,450.75</div><div class="label">Available now</div></div>
+    <div class="card"><div class="label">Savings</div><div class="amount">$28,750.20</div><div class="label up">+4.8% this year</div></div>
+    <div class="card wide">
+      <h2>Quick actions</h2><div class="toolbar"><button class="btn" onclick="alert('Demo: transfer workflow')">Transfer money</button><button class="btn secondary" onclick="alert('Demo: deposit workflow')">Deposit</button><button class="btn secondary" onclick="alert('Demo: bill payment workflow')">Pay a bill</button><button class="btn secondary" onclick="alert('Demo: statements')">Statements</button></div>
+    </div>
+    <div class="card wide"><h2>Recent transactions</h2><table><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th></tr></thead><tbody>
+      <tr><td>Aug 29</td><td>Salary Credit</td><td>Credit</td><td class="credit">+$5,200.00</td></tr>
+      <tr><td>Aug 28</td><td>Utility Payment</td><td>Debit</td><td class="debit">-$185.45</td></tr>
+      <tr><td>Aug 27</td><td>Online Transfer</td><td>Debit</td><td class="debit">-$450.00</td></tr>
+      <tr><td>Aug 25</td><td>Grocery Store</td><td>Debit</td><td class="debit">-$126.80</td></tr>
+    </tbody></table></div>
+    <div class="card"><div class="label">Security</div><h3>MFA enabled</h3><p class="label">Last sign-in: Today, 08:41</p><button class="btn secondary">Security settings</button></div>
+    <div class="card"><div class="label">Support</div><h3>Need help?</h3><p class="label">Secure customer support is available 24/7.</p><button class="btn secondary">Contact support</button></div>
+    <div class="card"><div class="label">Architecture</div><h3>Service health</h3><p class="label">Auth · Accounts · Transactions · Analytics</p><span class="status"><span class="dot"></span> Healthy</span></div>
+  </section>
+  <div class="notice">Portfolio architecture follows the Google Cloud Architect Design and Process Workbook: personas, user stories, SLO/SLIs, microservices, REST APIs, storage, networking, reliability, disaster recovery, security and cost planning.</div>
+</main><footer>SecureBank Online Banking Portal · Portfolio demonstration only</footer>
+</body></html>

@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+  title: SecureBank Online Banking API
+  version: 1.0.0
+  description: Portfolio/demo REST API contract for the SecureBank online banking portal.
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  /accounts:
+    get:
+      summary: List accounts for the authenticated customer
+      responses:
+        '200':
+          description: Account list
+  /accounts/{accountId}/balance:
+    get:
+      summary: Get current available balance
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Balance
+  /accounts/{accountId}/transactions:
+    get:
+      summary: List account transactions
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Transaction history
+  /accounts/{accountId}/deposit:
+    post:
+      summary: Simulate a deposit
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoneyRequest'
+      responses:
+        '200': { description: Deposit completed }
+  /accounts/{accountId}/withdraw:
+    post:
+      summary: Simulate a withdrawal
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoneyRequest'
+      responses:
+        '200': { description: Withdrawal completed }
+  /transfers:
+    post:
+      summary: Simulate an account transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
+      responses:
+        '200': { description: Transfer completed }
+components:
+  schemas:
+    MoneyRequest:
+      type: object
+      required: [amount]
+      properties:
+        amount: { type: number, minimum: 0.01 }
+    TransferRequest:
+      type: object
+      required: [fromAccountId, toAccountId, amount]
+      properties:
+        fromAccountId: { type: string }
+        toAccountId: { type: string }
+        amount: { type: number, minimum: 0.01 }
