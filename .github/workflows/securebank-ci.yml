@@ -1,0 +1,35 @@
+name: SecureBank CI
+
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Test
+        run: npm test
+      - name: Syntax check
+        run: npm run check
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+      - name: Build image
+        run: docker build -t securebank:ci .
+      - name: Container smoke test
+        run: |
+          docker run -d --name securebank-ci -p 8080:8080 securebank:ci
+          for i in {1..20}; do curl --fail http://127.0.0.1:8080/health && break; sleep 1; done
+          docker rm -f securebank-ci
