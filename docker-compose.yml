@@ -9,8 +9,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/migrations:/docker-entrypoint-initdb.d:ro
-      - ./database/seed:/docker-entrypoint-initdb.d/seed:ro
+      - ./database/migrations/001_initial_banking_schema.sql:/docker-entrypoint-initdb.d/001_initial_banking_schema.sql:ro
+      - ./database/seed/001_demo_data.sql:/docker-entrypoint-initdb.d/002_demo_data.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U securebank -d securebank"]
       interval: 5s
@@ -21,8 +21,10 @@ services:
     build: ./app
     environment:
       NODE_ENV: production
+      PERSISTENCE: postgres
       PORT: 8080
       DATABASE_URL: postgresql://securebank:securebank_local_only@postgres:5432/securebank
+      DATABASE_SSL: "false"
     ports:
       - "8080:8080"
     depends_on:
