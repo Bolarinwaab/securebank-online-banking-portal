@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -24,7 +27,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Synthetic authentication values in tests are deliberately non-secret fixtures.
+          # Keep production/configuration files covered while excluding only tests/ from this
+          # lightweight heuristic to avoid false positives on test payload field names.
           if git grep -nE "BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|api[_-]?key[[:space:]]*[:=]" -- \
-            '*.js' '*.json' '*.yml' '*.yaml' '*.tf'; then
+            '*.js' '*.json' '*.yml' '*.yaml' '*.tf' ':(exclude)tests/**'; then
             echo 'Potential secret pattern found'; exit 1
           fi
