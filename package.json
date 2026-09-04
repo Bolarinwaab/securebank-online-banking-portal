@@ -1,0 +1,13 @@
+{
+  "name": "securebank-online-banking-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SecureBank portfolio demo API and responsive banking dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "check": "node --check server.js && node --check public/app.js"
+  },
+  "engines": { "node": ">=20" }
+}
