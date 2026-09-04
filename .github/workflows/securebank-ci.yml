@@ -1,30 +1,59 @@
 name: SecureBank CI
+
 on:
   push:
     branches: [main, 'feature/**', 'implementation/**']
   pull_request:
     branches: [main]
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: securebank
+          POSTGRES_USER: securebank
+          POSTGRES_PASSWORD: securebank_ci_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U securebank -d securebank"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: app/package-lock.json
+
       - name: Install application
-        run: npm ci --prefix app
-      - name: Run tests
+        run: npm install --prefix app
+
+      - name: Apply PostgreSQL schema and synthetic seed
+        env:
+          PGPASSWORD: securebank_ci_only
+        run: |
+          psql -h 127.0.0.1 -U securebank -d securebank -f database/migrations/001_initial_banking_schema.sql
+          psql -h 127.0.0.1 -U securebank -d securebank -f database/seed/001_demo_data.sql
+
+      - name: Run unit and PostgreSQL integration tests
+        env:
+          DATABASE_URL: postgresql://securebank:securebank_ci_only@127.0.0.1:5432/securebank
         run: npm test --prefix app
+
       - name: Syntax and repository checks
         run: |
           npm run check --prefix app
           test -f README.md
           test -f app/server.js
           test -f app/src/banking.js
+          test -f app/src/postgres-repository.js
           test -f app/public/index.html
           test -f infrastructure/terraform/main.tf
+
       - name: Dependency audit
         run: npm audit --prefix app --audit-level=high
