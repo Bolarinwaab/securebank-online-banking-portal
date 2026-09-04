@@ -18,7 +18,7 @@ test('PostgreSQL runtime preserves balances and is idempotent', { skip: !databas
     const customer = await pool.query(
       `INSERT INTO customers (customer_no, first_name, last_name, email, phone)
        VALUES ($1,'Integration','Test',$2,$3) RETURNING id`,
-      [`IT${Date.now()}${suffix}`, `integration-${suffix}@example.invalid`, `081${suffix.slice(0,8)}`]
+      [`IT${Date.now().toString().slice(-8)}${suffix.slice(0,6)}`, `integration-${suffix}@example.invalid`, `081${suffix.slice(0,8)}`]
     );
     customerId = customer.rows[0].id;
 
