@@ -24,7 +24,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE '(BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password\s*[:=]\s*["'"']|api[_-]?key\s*[:=])' \
+          if grep -RInE "BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|api[_-]?key[[:space:]]*[:=]" \
             --exclude-dir=.git \
             --exclude-dir=node_modules \
             --exclude='*.md' \
