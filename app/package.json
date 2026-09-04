@@ -1,8 +1,12 @@
 {
-  "name": "securebank-demo",
-  "version": "1.0.0",
+  "name": "securebank-banking-sandbox",
+  "version": "2.0.0",
   "private": true,
-  "description": "Synthetic-data SecureBank portfolio demonstration",
-  "scripts": { "start": "node server.js", "test": "node --test ../tests/server.test.js" },
+  "description": "Functional synthetic-data Nigerian digital banking portfolio sandbox",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test src/banking.test.js ../tests/server.test.js",
+    "check": "node --check server.js && node --check src/banking.js"
+  },
   "engines": { "node": ">=20" }
 }
