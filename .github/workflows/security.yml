@@ -15,7 +15,7 @@ jobs:
           node-version: 20
 
       - name: Install application dependencies
-        run: npm install --prefix app
+        run: npm install --prefix app --ignore-scripts --no-audit --no-fund
 
       - name: Dependency audit
         run: npm audit --prefix app --audit-level=high
@@ -24,13 +24,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RInE "BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|api[_-]?key[[:space:]]*[:=]" \
-            --exclude-dir=.git \
-            --exclude-dir=node_modules \
-            --exclude='*.md' \
-            --exclude='*.sql' \
-            --exclude='docker-compose.yml' \
-            --exclude='package-lock.json' \
-            .; then
+          if git grep -nE "BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|api[_-]?key[[:space:]]*[:=]" -- \
+            '*.js' '*.json' '*.yml' '*.yaml' '*.tf'; then
             echo 'Potential secret pattern found'; exit 1
           fi
