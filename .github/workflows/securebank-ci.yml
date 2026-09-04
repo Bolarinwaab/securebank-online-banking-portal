@@ -10,14 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - name: Run application tests
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Install application
+        run: npm ci --prefix app
+      - name: Run tests
         run: npm test --prefix app
-      - name: Dependency audit
-        run: npm audit --prefix app --audit-level=high
-      - name: Repository checks
+      - name: Syntax and repository checks
         run: |
+          npm run check --prefix app
           test -f README.md
           test -f app/server.js
+          test -f app/src/banking.js
           test -f app/public/index.html
-          test -f infrastructure/terraform/main.tf || true
+          test -f infrastructure/terraform/main.tf
+      - name: Dependency audit
+        run: npm audit --prefix app --audit-level=high
