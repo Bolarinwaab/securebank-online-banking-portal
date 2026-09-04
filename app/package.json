@@ -1,12 +1,12 @@
 {
   "name": "securebank-banking-sandbox",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "description": "Functional synthetic-data Nigerian digital banking portfolio sandbox with PostgreSQL persistence",
   "scripts": {
     "start": "node server.js",
-    "test": "node --test src/banking.test.js src/postgres-repository.test.js ../tests/server.test.js",
-    "check": "node --check server.js && node --check src/banking.js && node --check src/postgres-repository.js",
+    "test": "node --test src/banking.test.js src/postgres-repository.test.js src/postgres-e2e.test.js ../tests/server.test.js",
+    "check": "node --check server.js && node --check src/banking.js && node --check src/postgres-repository.js && node --check src/postgres-e2e.test.js",
     "db:health": "node -e \"require('./src/postgres-repository').createPostgresBank().health().then(x=>{console.log(x);return process.exit(0)}).catch(e=>{console.error(e.message);process.exit(1)})\""
   },
   "dependencies": {
