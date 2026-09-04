@@ -22,14 +22,17 @@ test('PostgreSQL runtime preserves balances and is idempotent', { skip: !databas
     );
     customerId = customer.rows[0].id;
 
+    const accountNoA = `91${Date.now().toString().slice(-8)}`;
+    const accountNoB = `92${Date.now().toString().slice(-8)}`;
     const accounts = await pool.query(
       `INSERT INTO accounts (customer_id, account_no, account_type, available_balance, ledger_balance)
        VALUES ($1,$2,'CURRENT',1000,1000),($1,$3,'SAVINGS',500,500)
-       RETURNING id, account_no, available_balance ORDER BY account_no`,
-      [customerId, `91${Date.now().toString().slice(-8)}`, `92${Date.now().toString().slice(-8)}`]
+       RETURNING id, account_no, available_balance`,
+      [customerId, accountNoA, accountNoB]
     );
-    accountA = accounts.rows[0].id;
-    accountB = accounts.rows[1].id;
+    const byNumber = new Map(accounts.rows.map(row => [row.account_no, row.id]));
+    accountA = byNumber.get(accountNoA);
+    accountB = byNumber.get(accountNoB);
 
     const before = await bank.getAccounts(customerId);
     const beforeTotal = before.reduce((sum, account) => sum + account.availableBalance, 0);
