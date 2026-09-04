@@ -1,0 +1,1 @@
+Repository inspection confirms PostgreSQL migration, synthetic seed data, Docker Compose, Cloud SQL Terraform, financial transaction consistency, production cutover and production readiness documentation are present. The repository connector does not execute Docker or Terraform, so no live deployment claim is made.
