@@ -31,13 +31,14 @@ jobs:
           node-version: 20
 
       - name: Install application
-        run: npm install --prefix app
+        run: npm install --prefix app --ignore-scripts --no-audit --no-fund
 
-      - name: Apply PostgreSQL schema and synthetic seed
+      - name: Apply PostgreSQL schema, controls and synthetic seed
         env:
           PGPASSWORD: securebank_ci_only
         run: |
           psql -h 127.0.0.1 -U securebank -d securebank -f database/migrations/001_initial_banking_schema.sql
+          psql -h 127.0.0.1 -U securebank -d securebank -f database/migrations/002_reconciliation_controls.sql
           psql -h 127.0.0.1 -U securebank -d securebank -f database/seed/001_demo_data.sql
 
       - name: Run unit and PostgreSQL integration tests
@@ -52,6 +53,7 @@ jobs:
           test -f app/server.js
           test -f app/src/banking.js
           test -f app/src/postgres-repository.js
+          test -f app/src/postgres-e2e.test.js
           test -f app/public/index.html
           test -f infrastructure/terraform/main.tf
 
