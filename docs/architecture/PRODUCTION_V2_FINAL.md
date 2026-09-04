@@ -1,0 +1,1 @@
+Production V2 is a safe reference architecture, not a live banking deployment. It adds persistent data design, transaction integrity, cloud database infrastructure, security, reliability and controlled production cutover documentation.
