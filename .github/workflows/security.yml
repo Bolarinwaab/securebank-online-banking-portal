@@ -1,0 +1,19 @@
+name: SecureBank Security
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Dependency audit
+        run: npm audit --prefix app --audit-level=high
+      - name: Secret-pattern check
+        shell: bash
+        run: |
+          if grep -RInE '(BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password\s*[:=]\s*["'"']|api[_-]?key\s*[:=])' --exclude-dir=.git .; then
+            echo 'Potential secret pattern found'; exit 1; fi
