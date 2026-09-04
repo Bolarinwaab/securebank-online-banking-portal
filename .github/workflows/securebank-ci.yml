@@ -39,6 +39,7 @@ jobs:
         run: |
           psql -h 127.0.0.1 -U securebank -d securebank -f database/migrations/001_initial_banking_schema.sql
           psql -h 127.0.0.1 -U securebank -d securebank -f database/migrations/002_reconciliation_controls.sql
+          psql -h 127.0.0.1 -U securebank -d securebank -f database/migrations/003_runtime_compatibility.sql
           psql -h 127.0.0.1 -U securebank -d securebank -f database/seed/001_demo_data.sql
 
       - name: Run unit and PostgreSQL integration tests
