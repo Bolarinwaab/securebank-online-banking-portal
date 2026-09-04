@@ -22,7 +22,10 @@ function createBank() {
   let dailyTransferred = 0;
 
   function getAccount(id) { return accounts.find(a => a.id === id); }
-  function getTransactions(accountId) { return accountId ? transactions.filter(t => t.accountId === accountId) : [...transactions]; }
+  function getTransactions(accountId, optionalAccountId) {
+    const requestedAccountId = optionalAccountId || accountId;
+    return requestedAccountId ? transactions.filter(t => t.accountId === requestedAccountId) : [...transactions];
+  }
   function auditEvent(action, details) { audit.unshift({ id: `AUD-${Date.now()}-${crypto.randomInt(100,999)}`, action, details, timestamp: new Date().toISOString() }); }
 
   function transfer(input) {
@@ -68,7 +71,19 @@ function createBank() {
     return { status, reference: ref, amount, fee, currency: 'NGN' };
   }
 
-  return { accounts, beneficiaries, audit, getAccount, getTransactions, transfer, getTransactionsAll: () => [...transactions], getAudit: () => [...audit], dailyLimit: DAILY_LIMIT };
+  return {
+    accounts,
+    beneficiaries,
+    audit,
+    getAccount,
+    getAccounts: async () => [...accounts],
+    getTransactions,
+    getBeneficiaries: async () => [...beneficiaries],
+    transfer,
+    getTransactionsAll: () => [...transactions],
+    getAudit: () => [...audit],
+    dailyLimit: DAILY_LIMIT
+  };
 }
 
 module.exports = { createBank, DEMO_OTP, DAILY_LIMIT };
