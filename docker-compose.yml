@@ -11,7 +11,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./database/migrations/001_initial_banking_schema.sql:/docker-entrypoint-initdb.d/001_initial_banking_schema.sql:ro
       - ./database/migrations/002_reconciliation_controls.sql:/docker-entrypoint-initdb.d/002_reconciliation_controls.sql:ro
-      - ./database/seed/001_demo_data.sql:/docker-entrypoint-initdb.d/003_demo_data.sql:ro
+      - ./database/migrations/003_runtime_compatibility.sql:/docker-entrypoint-initdb.d/003_runtime_compatibility.sql:ro
+      - ./database/seed/001_demo_data.sql:/docker-entrypoint-initdb.d/004_demo_data.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U securebank -d securebank"]
       interval: 5s
